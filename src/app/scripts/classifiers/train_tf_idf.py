@@ -7,9 +7,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score, classification_report
 import joblib
+from src.app.config import CLEANED_DATA_FILE, TFIDF_MODEL_PATH
 
 # adjust import path if needed
-from src.app.core.tokinizers.tokinizer_tf_idf import TextCleaner
+from src.app.core.tokenizers.tokenizer_tf_idf import TextCleaner
 
 # Initialize the text cleaner
 cleaner = TextCleaner()
@@ -20,8 +21,8 @@ def tokenizer_func(text):
     return cleaned.split() if cleaned else []
 
 def main():
-    data_path = "data/cleaned_job_postings.csv"
-    model_path = "models/tfidf_logreg_pipeline.joblib"
+    cleaned_data_file = CLEANED_DATA_FILE
+    model_save_path = TFIDF_MODEL_PATH
 
     print("Loading cleaned data...")
     df = pd.read_csv(data_path)

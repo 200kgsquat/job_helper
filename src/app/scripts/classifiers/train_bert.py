@@ -3,20 +3,16 @@ import pandas as pd
 from sklearn.metrics import classification_report
 from src.app.core.classifiers.bert import BertWrapper
 import torch
+from src.app.config import CLEANED_DATA_FILE, BERT_MODEL_PATH
 
 def main():
     # Define file paths
-    cleaned_data_file = "data/cleaned_job_postings.csv"
-    model_save_path = "models/bert_model.pth"
+    cleaned_data_file = CLEANED_DATA_FILE
+    model_save_path = BERT_MODEL_PATH
 
     # Load cleaned data
     print("Loading cleaned data...")
     df = pd.read_csv(cleaned_data_file)
-
-    # Ensure descriptions are strings and handle missing values
-    df["description"] = df["description"].fillna("").astype(str)
-    df = df[df["description"].str.len() > 0]
-    df["industry"] = df["industry"].fillna("unknown")
 
     # Initialize BERT wrapper
     print("Initializing BERT model...")
