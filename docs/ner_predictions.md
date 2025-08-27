@@ -6,20 +6,32 @@ This document summarizes predictions made by the BERT NER model (`bert-base-case
 
 ## 1. Overall Performance
 
-**F1-score (seqeval):** 0.507  
+# Model Performance Comparison
 
-**Classification Report:**
+## BERT-NER
 
-| Class | Precision | Recall | F1-score | Support |
-|-------|-----------|--------|----------|--------|
-| _     | 0.51      | 0.51   | 0.51     | 1091   |
-| **micro avg** | 0.51 | 0.51 | 0.51 | 1091 |
-| **macro avg** | 0.51 | 0.51 | 0.51 | 1091 |
-| **weighted avg** | 0.51 | 0.51 | 0.51 | 1091 |
+| Class            | Precision | Recall | F1-score | Support |
+| ---------------- | --------- | ------ | -------- | ------- |
+| \_               | 0.51      | 0.51   | 0.51     | 1091    |
+| **micro avg**    | 0.51      | 0.51   | 0.51     | 1091    |
+| **macro avg**    | 0.51      | 0.51   | 0.51     | 1091    |
+| **weighted avg** | 0.51      | 0.51   | 0.51     | 1091    |
 
-> Note: The model struggles to correctly identify entities beyond simple `O` labels. The `B` and `I` tags are often missed or under-predicted.
+> Note: The model struggles to correctly identify entities beyond simple `O` labels. `B` and `I` tags are often missed or under-predicted.
 
----
+## LR + CRF
+
+| Class            | Precision | Recall | F1-score | Support |
+| ---------------- | --------- | ------ | -------- | ------- |
+| \_               | 0.34      | 0.26   | 0.30     | 755     |
+| **micro avg**    | 0.34      | 0.26   | 0.30     | 755     |
+| **macro avg**    | 0.34      | 0.26   | 0.30     | 755     |
+| **weighted avg** | 0.34      | 0.26   | 0.30     | 755     |
+
+**Span-level F1:** 0.296
+
+> Improved CRF model saved as `'crf_model_improved.joblib'`.
+
 
 ## 2. Sample Predictions
 
@@ -69,4 +81,15 @@ True labels: `O O O O ...` (all `O`)
    - Hyphenated words (`front-end`, `back-end`)  
    - Long sequences of entities  
    - Rare or domain-specific terms  
+
+
+## 4. Running Training
+
+* **Number of examples:** 7,974
+* **Number of epochs:** 3
+* **Batch size per device:** 16
+* **Total train batch size** (with parallel, distributed & accumulation): 16
+* **Gradient accumulation steps:** 1
+* **Total optimization steps:** 1,497
+* **Number of trainable parameters:** 107,721,987
 
