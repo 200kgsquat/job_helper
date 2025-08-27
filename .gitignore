@@ -2,3 +2,5 @@
 /models
 __pycache__/
 *.py[cod]
+/venv
+/bert-ner-skillspan
