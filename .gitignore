@@ -4,3 +4,4 @@ __pycache__/
 *.py[cod]
 /venv
 /bert-ner-skillspan
+.python-version
