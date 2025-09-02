@@ -1,8 +1,16 @@
+# src/app/core/classifiers/tf_idf.py
+import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from src.app.core.tokenizers.tokenizer_tf_idf import TextCleaner
+
+text_cleaner = TextCleaner()
+
+def tokenizer_func(text):
+    return text_cleaner.clean_text(text)
 
 class TFIDFWrapper:
     def __init__(self, max_features=10000, ngram_range=(1, 2), classifier=None, test_size=0.2, random_state=42):
@@ -52,3 +60,20 @@ class TFIDFWrapper:
     def predict(self, X):
         """Make predictions on new data."""
         return self.pipeline.predict(X)
+
+    def save(self, path: str):
+        """
+        Save the TF-IDF pipeline to a .joblib file.
+        """
+        joblib.dump(self.pipeline, path)
+        print(f"Pipeline saved to {path}")
+
+    @classmethod
+    def load(cls, path: str):
+        """
+        Load a pre-trained TF-IDF pipeline from a .joblib file.
+        """
+        pipeline = joblib.load(path)
+        instance = cls()
+        instance.pipeline = pipeline
+        return instance
