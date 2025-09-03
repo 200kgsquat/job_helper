@@ -1,4 +1,3 @@
-# tests/api/test_extract_skills.py
 def _normalize_ner_response(resp_json):
     """
     Accepts multiple possible keys and normalizes to a list-of-lists of entity dicts.

@@ -1,4 +1,3 @@
-# tests/api/test_health.py
 def test_health_endpoint(client):
     """
     Health endpoint returns status OK and HTTP 200.

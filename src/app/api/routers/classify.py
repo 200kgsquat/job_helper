@@ -1,16 +1,15 @@
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
-from src.app.api.dependencies.client import get_bert_model
+from src.app.api.dependencies.client import get_tfidf_model
+from src.app.api.schemas.schemas import ClassifyRequest
+from src.app.api.responses.classify import ClassifyResponse
 
 router = APIRouter()
 
-class ClassifyRequest(BaseModel):
-    texts: list[str]
-
-class ClassifyResponse(BaseModel):
-    predictions: list[str]
-
 @router.post("/classify", response_model=ClassifyResponse)
-def classify(request: ClassifyRequest, model=Depends(get_bert_model)):
+def classify(request: ClassifyRequest, model=Depends(get_tfidf_model)):
+    """
+    Endpoint to classify input texts using the TF-IDF model.
+    """
     predictions = model.predict(request.texts)
     return ClassifyResponse(predictions=predictions)
+

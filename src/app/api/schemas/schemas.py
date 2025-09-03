@@ -1,10 +1,9 @@
 from pydantic import BaseModel
 
-class TextRequest(BaseModel):
-    text: str
-
-class ClassificationResponse(BaseModel):
-    category: str
-
-class SkillsResponse(BaseModel):
-    skills: list[str]
+# --- Classify schemas ---
+class ClassifyRequest(BaseModel):
+    texts: list[str]
+    
+# --- NER / Extract skills schemas ---
+class NERRequest(BaseModel):
+    texts: list[str]
