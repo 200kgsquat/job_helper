@@ -1,18 +1,16 @@
-# src/app/config.py
 import os
 
-# Base paths
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DATA_DIR = os.path.join(BASE_DIR, 'data')
-MODELS_DIR = os.path.join(BASE_DIR, 'models')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.abspath(os.path.join(current_dir, '..', '..', '..'))
 
-# Data files
-CLEANED_DATA_FILE = os.path.join(DATA_DIR, 'cleaned_job_postings.csv')
+MODELS_DIR = os.path.join(BASE_DIR, "models")
+TFIDF_MODEL_PATH = os.path.join(MODELS_DIR, "tfidf_logreg_pipeline.joblib")
+NER_MODEL_PATH = os.path.join(MODELS_DIR, "bert-ner-skillspan")
 
-# Model files
-TFIDF_MODEL_PATH = os.path.join(MODELS_DIR, 'tfidf_logreg_pipeline.joblib')
-BERT_MODEL_PATH = os.path.join(MODELS_DIR, 'bert_model.pth')
-
-# Ensure directories exist
-os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(MODELS_DIR, exist_ok=True)
+
+if not os.path.exists(TFIDF_MODEL_PATH):
+    print(f"Warning: TF-IDF model not found at {TFIDF_MODEL_PATH}")
+
+if not os.path.exists(NER_MODEL_PATH):
+    print(f"Warning: NER model not found at {NER_MODEL_PATH}")

@@ -9,3 +9,9 @@ train_tf_idf:
 
 train-bert:
 	uv run python -m src.app.scripts.classifiers.train_bert
+
+test:
+	pytest -q
+
+venv:
+	.\.venv\Scripts\Activate.ps1
