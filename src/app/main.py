@@ -5,11 +5,9 @@ from src.app.core.ner.bert_ner import BertNER
 from src.app.core.classifiers.tf_idf import TFIDFWrapper
 from src.app.api.routers import classify, extract_skills, health
 from src.app.config.config import NER_MODEL_PATH, TFIDF_MODEL_PATH
-from src.app.core.tokenizers.tokenizer_tf_idf import tokenizer_func
+from src.app.logs.logger import get_logger
 
-# Global variables to hold models
-ner_model: BertNER | None = None
-tfidf_model: TFIDFWrapper | None = None
+logger = get_logger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -17,24 +15,22 @@ async def lifespan(app: FastAPI):
     FastAPI lifespan for initializing models on startup
     and cleaning up on shutdown.
     """
-    global ner_model, tfidf_model
-
     # --- Startup ---
-    print("Loading models...")
+    logger.info("Loading models...")
 
     # Load NER model
-    ner_model = BertNER()
     try:
-        print(f"NER model initialized from {NER_MODEL_PATH}")
-    except Exception:
-        print("NER model not found, using default untrained model")
+        ner_model = BertNER()
+        logger.info(f"NER model initialized from {NER_MODEL_PATH}")
+    except Exception as e:
+        logger.warning(f"NER model not found, using default untrained model: {e}")
 
     # Load TF-IDF model
     try:
         tfidf_model = TFIDFWrapper.load(TFIDF_MODEL_PATH)
-        print(f"TF-IDF model loaded from {TFIDF_MODEL_PATH}")
-    except Exception:
-        print("TF-IDF model not found, using default untrained model")
+        logger.info(f"TF-IDF model loaded from {TFIDF_MODEL_PATH}")
+    except Exception as e:
+        logger.warning(f"TF-IDF model not found, using default untrained model: {e}")
         tfidf_model = TFIDFWrapper()
 
     # Attach models to app.state for dependency injection
@@ -44,11 +40,9 @@ async def lifespan(app: FastAPI):
     yield  # App runs here
 
     # --- Shutdown ---
-    print("Cleaning up models...")
-    ner_model = None
-    tfidf_model = None
-    app.state.ner_model = None
-    app.state.tfidf_model = None
+    logger.info("Cleaning up models...")
+    # Python's garbage collection will handle cleanup automatically
+    # No need to manually set variables to None
 
 
 # Create FastAPI app with lifespan

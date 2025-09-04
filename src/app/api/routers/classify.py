@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
 from src.app.api.dependencies.client import get_tfidf_model
-from src.app.api.schemas.schemas import ClassifyRequest
-from src.app.api.responses.classify import ClassifyResponse
+from src.app.api.schemas.schemas import ClassifyRequest, ClassifyResponse
+from src.app.api.responses.classify import classify_responses
 
 router = APIRouter()
 
-@router.post("/classify", response_model=ClassifyResponse)
+@router.post("/classify", response_model=ClassifyResponse, responses = classify_responses)
 def classify(request: ClassifyRequest, model=Depends(get_tfidf_model)):
     """
     Endpoint to classify input texts using the TF-IDF model.
